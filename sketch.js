@@ -7,9 +7,13 @@ var engine, world;
 var box1, pig1;
 var backgroundImg,platform;
 var logexemplo;
+var gameState="inicio";
+var bg="sprites/bg.png";
+var score=0;
+
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+  mudarfundo();
 }
 
 function setup(){
@@ -48,7 +52,16 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+    if(backgroundImg){
+    background(backgroundImg);}
+
+    noStroke();
+    textSize(35);
+    fill("white");
+    text("PONTUAÇÃO: "+score, width-350,50);
+
+
+
     Engine.update(engine);
     //console.log(box2.body.position.x);
     //console.log(box2.body.position.y);
@@ -57,11 +70,14 @@ function draw(){
     box2.display();
     ground.display();
     pig1.display();
+    pig1.score();
+    
     log1.display();
 
     box3.display();
     box4.display();
     pig3.display();
+    pig3.score();
     log3.display();
 
     box5.display();
@@ -78,15 +94,36 @@ function draw(){
 
 
 function mouseDragged(){
+    if(gameState!=="lancado"){
     Matter.Body.setPosition(bird.body,{x:mouseX,y:mouseY});
+    }
+
 }
 function mouseReleased(){
     restricao.fly();
+    gameState="lancado";
 }
 
 function keyPressed(){
     if(keyCode === 32){
     restricao.prender(bird.body);
-
+    gameState="inicio";
     }
+}
+async function mudarfundo(){
+    var resposta = await fetch("https://worldtimeapi.org/api/timezone/America/Cuiaba");
+    var respostajson =await resposta.json();
+
+
+    var data = respostajson.datetime;
+    var hora = data.slice(11,13);
+    if(hora>=06 && hora<=18){
+        bg="sprites/bg.png";
+        
+    } 
+    else{
+        bg="sprites/bg2.jpg";
+    }
+    backgroundImg=loadImage(bg);
+
 }

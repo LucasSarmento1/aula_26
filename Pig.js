@@ -5,7 +5,7 @@ class Pig extends BaseClass {
     this.visibility=255;
   }
   display(){
-    console.log(this.body.speed);
+    //console.log(this.body.speed);
     if(this.body.speed<3){
       super.display();
     }
@@ -18,6 +18,11 @@ class Pig extends BaseClass {
      pop();
     }
      
+  }
+  score(){
+    if(this.visibility<0 && this.visibility>-1005){
+      score=score+1;
+    }
   }
 
 };
